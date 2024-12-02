@@ -1,0 +1,131 @@
+import {
+  IsNotEmpty,
+  IsString,
+  IsOptional,
+  IsNumber,
+  IsEnum,
+  IsArray,
+  IsPositive,
+  Min,
+} from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+
+/**
+ * DTO for creating a film.
+ * Ensures proper validation and documentation for the API.
+ */
+export class CreateFilmDto {
+  @IsNotEmpty() // Validation: The field must not be empty
+  @IsString() // Validation: The field must be a string
+  @ApiProperty({
+    example: 'The Matrix',
+    description: 'Title of the film',
+    required: true,
+  })
+  title: string; // Title of the film
+
+  @IsOptional() // Validation: This field is optional
+  @IsString() // Validation: The field must be a string if provided
+  @ApiProperty({
+    example: 'A computer hacker learns...',
+    description: 'Description of the film',
+    required: false,
+  })
+  description?: string; // Description of the film (optional)
+
+  @IsOptional()
+  @IsNumber()
+  @Min(1900) // Validation: Year must be 1900 or later
+  @ApiProperty({
+    example: 1999,
+    description: 'Release year of the film',
+    required: false,
+  })
+  releaseYear?: number; // Release year of the film (optional)
+
+  @IsNotEmpty()
+  @IsNumber()
+  @IsPositive() // Validation: Must be a positive number
+  @ApiProperty({
+    example: 7,
+    description: 'Rental duration in days',
+    required: true,
+  })
+  rentalDuration: number; // Rental duration in days (required)
+
+  @IsNotEmpty()
+  @IsNumber()
+  @ApiProperty({
+    example: 1,
+    description: 'Language ID for the film',
+    required: true,
+  })
+  languageId: number; // Language ID for the film (required)
+
+  @IsOptional()
+  @IsNumber()
+  @ApiProperty({
+    example: 2,
+    description: 'Original language ID (if different)',
+    required: false,
+  })
+  originalLanguageId?: number; // Original language ID for the film (optional)
+
+  @IsNotEmpty()
+  @IsNumber()
+  @IsPositive()
+  @ApiProperty({
+    example: 4.99,
+    description: 'Rental rate of the film',
+    required: true,
+  })
+  rentalRate: number; // Rental rate for the film (required)
+
+  @IsOptional()
+  @IsNumber()
+  @ApiProperty({
+    example: 120,
+    description: 'Length of the film in minutes',
+    required: false,
+  })
+  length?: number; // Length of the film in minutes (optional)
+
+  @IsNotEmpty()
+  @IsNumber()
+  @IsPositive()
+  @ApiProperty({
+    example: 19.99,
+    description: 'Replacement cost of the film',
+    required: true,
+  })
+  replacementCost: number; // Replacement cost for the film (required)
+
+  @IsNotEmpty()
+  @IsEnum(['G', 'PG', 'PG-13', 'R', 'NC-17']) // Validation: Must be one of the predefined ratings
+  @ApiProperty({
+    example: 'PG-13',
+    description: 'Film rating',
+    enum: ['G', 'PG', 'PG-13', 'R', 'NC-17'],
+    required: true,
+  })
+  rating: string; // Rating of the film (required)
+
+  @IsOptional()
+  @IsArray() // Validation: Must be an array
+  @IsString({ each: true }) // Validation: Each item in the array must be a string
+  @ApiProperty({
+    example: ['Deleted Scenes', 'Behind the Scenes'],
+    description: 'Special features of the film',
+    required: false,
+  })
+  specialFeatures?: string[]; // Special features of the film (optional)
+
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty({
+    example: 'Sci-Fi Hacker Action',
+    description: 'Full text for search indexing',
+    required: true,
+  })
+  fulltext: string; // Full text for search indexing (required)
+}
